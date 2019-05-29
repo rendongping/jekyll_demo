@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
+            font-size: 16px;
+        }
+        header {
+            text-align: center;
+        }
+        h2, h3 {
+            color: #2c3e50;
+        }
+        article {
+            width: 50%;
+            min-width: 400px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .item-container {
+            margin-left: 20px;
+        }
+        h4 {
+            color: #2c3e50;
+        }
+        p {
+            line-height: 1.6em;
+            margin: 1.2em 0 -1.2em;
+            padding-bottom: 1.2em;
+            color: #34495e;
+        }
+        p.item-detail {
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    
+</body>
+</html>
+    <header>
+        <h2>再次欢迎来到德莱联盟,vue战场</h2>
+    </header>
+    
+    <article>
+        <h3>需要特别注意的点</h3>
+        <h4>从不那么特别的开始吧</h4>
+        <div class="item-container">
+            <p>没有完全遵循 MVVM 模型(●'◡'●)</p>
+        </div>
+        <h4>属性可能不会生效</h4>
+        <div class="item-container">
+            <p>只有当实例被创建时 data 中存在的属性才是响应式的</p>
+            <p class="item-detail">也就是说如果你添加一个新的属性，比如：
+                    vm.b = 'hi'
+                    那么对 b 的改动将不会触发任何视图的更新。如果你知道你会在晚些时候需要一个属性，
+                    但是一开始它为空或不存在，那么你仅需要设置一些初始值</p>
+        </div>
+        
+    </article> 
