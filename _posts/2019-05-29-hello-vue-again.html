@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
+            font-size: 16px;
+        }
+        header {
+            text-align: center;
+        }
+        h2, h3 {
+            color: #2c3e50;
+        }
+        article {
+            width: 50%;
+            min-width: 400px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .item-container {
+            margin-left: 20px;
+        }
+        h4 {
+            color: #2c3e50;
+        }
+        p {
+            line-height: 1.6em;
+            margin: 1.2em 0 -1.2em;
+            padding-bottom: 1.2em;
+            color: #34495e;
+        }
+        p.item-detail {
+            font-size: 12px;
+        }
+        code {
+            color: #e96900;
+            padding: 3px 5px;
+            margin: 0 2px;
+            border-radius: 2px;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    
+</body>
+</html>
+    <header>
+        <h2>再次欢迎来到德莱联盟,vue战场</h2>
+    </header>
+    
+    <article>
+        <h4>v-bind</h4>
+        <div class="item-container">
+                <pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">v-bind:disabled</span>=<span class="hljs-string">"isButtonDisabled"</span>&gt;</span>Button<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></code></pre>
+                <p>如果 <code>isButtonDisabled</code> 的值是 <code>null</code>、<code>undefined</code> 或 <code>false</code>，则 <code>disabled</code> 特性甚至不会被包含在渲染出来的 <code>&lt;button&gt;</code> 元素中。</p>
+        </div>
+
+        <h4>计算属性</h4>
+        <div class="item-container">
+            <p>计算属性是基于它们的响应式依赖进行缓存的</p>
+        </div>
+
+        <h4>key</h4>
+        <div class="item-container">
+            <p>有相同父元素的子元素必须有独特的 key。重复的 key 会造成渲染错误</p>
+        </div>
+
+        <h4>数组更新检测</h4>
+        <div class="item-container">
+                <p>变异方法 (mutation method)，顾名思义，会改变被这些方法调用的原始数组。相比之下，也有非变异 (non-mutating method) 方法，例如：filter(), concat() 和 slice() 。这些不会改变原始数组，但总是返回一个新数组。当使用非变异方法时，可以用新数组替换旧数组：</p>
+                <p>由于 JavaScript 的限制，Vue 不能检测以下变动的数组：
+
+                        当你利用索引直接设置一个项时，例如：vm.items[indexOfItem] = newValue
+                        当你修改数组的长度时，例如：vm.items.length = newLength</p>
+            </div>
+        
+    </article> 
