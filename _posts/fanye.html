@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>翻页</title>  
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .center {
+            position: relative;
+            text-align: center;
+        }
+        .card {
+            position: absolute;
+            width: 80%;
+            height: 180px;
+            top: 40px;
+            left: 50%;
+            transform: translate(-50%);
+        }
+        .toshow:nth-child(1) {
+            width: 90%;
+            height: 200px;
+            top: 0;
+        }
+        .toshow:nth-child(2) {
+            width: 85%;
+            height: 190px;
+            top: 20px;
+        }
+        .toshow:nth-child(3) {
+            width: 80%;
+            height: 180px;
+            top: 40px;
+        }
+        .buttons {
+            text-align: center;
+            position: fixed;
+            bottom: 20px;
+        }
+    </style>
+</head>
+ 
+<body>
+    <div class="center">
+        <div class="card toshow" style="background-color: red;">
+            <span>11111</span>
+        </div>
+        <div class="card toshow" style="background-color: green;">
+            <span>2222</span>
+        </div>
+        <div class="card toshow" style="background-color: yellow;">
+            <span>33333</span>
+        </div>
+        <div class="card toshow" style="background-color: blue;">
+            <span>44444</span>
+        </div>
+        <div class="card toshow" style="background-color: purple;">
+            <span>55555</span>
+        </div>
+        <div class="card toshow" style="background-color: cyan;">
+            <span>66666</span>
+        </div>
+    </div>
+    <div class="buttons">
+        <button class="last">last</button>
+        <button class="next">next</button>
+    </div>
+    
+</body>
+ 
+ 
+<script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+<script type="text/javascript">
+    // 思路概要
+    // 1、初始化所有卡片
+    //      所有卡片默认属性为第三张的属性，然后设置上面两张卡片的大小、位置
+    //      卡片状态分为两种：toshow、showed。还未翻页的卡片class='toshow'，翻过去一张卡片就把class从toshow改为showed,翻回来一张卡片就把class从showed改为toshowed。这样做，不管是已经翻页的第一个或者最后一个还是未翻页的第一或者最后一个都很容易获取。
+    // 2、翻最上面的一张时，让卡片左移，同时调整大小，然后在回调里调整z-index(在回调调整z-index是为了让动画过程符合视觉逻辑，让最上面的卡片不覆盖下面的卡片之后，再把层级改为最小)，之后再右移到底部。
+    // 然后animate让第二张第三张的卡片分别变成之前第一第二张的卡片的大小和位置
+    // 3、倒过来翻逻辑类似，先让最底部的卡片左移，之后设置卡片为最上层，然后右移，右移同时调整之前上面的两张卡片
+
+
+    // 给每个card设置对应的z-index
+    $('.center .card').each(function(index){
+        $(this).css({'zIndex': $('.card').length-index})
+    });
+    var lastClickTime = new Date().getTime();
+    var delay = 500; // transition的延迟。这里我是设置的大约的时间，按说应该跟jQuery.animate的默认时间一致，
+    $('.next').click(function() {
+        // 如果距离上次点击不到500毫秒，就禁止执行下去
+        if (new Date().getTime() - lastClickTime < delay) {
+            return false;
+        }
+        // 如果是最后一张了，后面的代码不需要执行了
+        if ($('.center .toshow').length ==1) {
+            return false;
+        }
+        lastClickTime = new Date().getTime();
+        // 获取第一张toshow卡片，让其左移，同时调整大小跟位置与最底部的一样，
+        // 在这第一个animate里的回调里再设置z-index:让所有卡片都上浮一层，让当前卡片放到了底层
+        //      先让所有卡片的z-index都加1，再让当前的z-index变为1
+        $('.center .toshow').eq(0).animate({left: '-40%',width: '80%', height: '180px', top: '40px'}, function() {
+            // 这里为第一个animate的回调
+            $('.center .card').each(function(index){
+                $(this).css({'zIndex': Number($(this).css('z-index'))+1})
+            });
+            $('.center .toshow').eq(0).css({zIndex:1}).animate({left: '50%'}, function(){
+                // 当所有动画执行完毕时，再修改卡片状态
+                $('.center .toshow').eq(0).removeClass('toshow').addClass('showed');
+            })
+        });
+        // 让第二张卡片成为第一张卡片
+        $('.center .toshow').eq(1).animate({width: '90%', height: '200px', top: 0});
+        // 让第三张卡片成为第二张卡片
+        $('.center .toshow').eq(2).animate({width: '85%', height: '190px', top: '20px'});
+        // 处理 翻到最后一个的时候，让底部依然显示两个
+        if ($('.center .toshow').length ==2) {
+            $('.center .showed').eq(0).animate({width: '85%', height: '190px', top: '20px'})
+        }
+    })
+    $('.last').click(function() {
+        if (new Date().getTime() - lastClickTime < delay) {
+            return;
+        }
+        if (!$('.center .showed').length) {
+            return false;
+        }
+        lastClickTime = new Date().getTime();
+        $('.center .showed').last().animate({left: '-40%'}, function(){
+            $('.center .card').each(function(index){
+                $(this).css({'zIndex': Number($(this).css('z-index'))-1})
+            });
+            $('.center .showed').last().css({zIndex:6}).animate({left: '50%', height: '200px', width: '90%', top: 0}, function(){
+                $('.center .showed').last().removeClass('showed').addClass('toshow');
+            })
+        });
+        $('.center .toshow').eq(0).animate({width: '85%', height: '190px', top: '20px'});
+        $('.center .toshow').eq(1).animate({width: '80%', height: '180px', top: '40px'});
+        $('.center .toshow').eq(2).animate({width: '80%', height: '180px'});
+    })
+</script>
+</body>
+</html>
