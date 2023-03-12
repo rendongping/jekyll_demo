@@ -55,6 +55,19 @@
     </header>
     
     <article>
+        <h3>需要特别注意的点</h3>
+        <h4>从不那么特别的开始吧</h4>
+        <div class="item-container">
+            <p>没有完全遵循 MVVM 模型(●'◡'●)</p>
+        </div>
+        <h4>属性可能不会生效</h4>
+        <div class="item-container">
+            <p>只有当实例被创建时 data 中存在的属性才是响应式的</p>
+            <p class="item-detail">也就是说如果你添加一个新的属性，比如：
+                    vm.b = 'hi'
+                    那么对 b 的改动将不会触发任何视图的更新。如果你知道你会在晚些时候需要一个属性，
+                    但是一开始它为空或不存在，那么你仅需要设置一些初始值</p>
+        </div>
         <h4>v-bind</h4>
         <div class="item-container">
                 <pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">v-bind:disabled</span>=<span class="hljs-string">"isButtonDisabled"</span>&gt;</span>Button<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></code></pre>
@@ -81,5 +94,22 @@
                 <p>第一种情况的解决方案Vue.set(vm.items, indexOfItem, newValue) 或者 vm.items.splice(indexOfItem, 1, newValue) 或者 vm.$set(vm.items, indexOfItem, newValue)</p>
                 <p>第二种情况解决方案：vm.items.splice(newLength)</p>
             </div>
+
+        <h4>Vue 不能检测对象属性的添加或删除</h4>
+        <div class="item-container">
+            <p>对于已经创建的实例，Vue 不能动态添加根级别的响应式属性。但是，可以使用 Vue.set(object, propertyName, value) 方法向嵌套对象添加响应式属性</p>
+            <p>或者：vm.$set(vm.userProfile, 'age', 27)</p>
+            <p>给对象添加多个属性：vm.userProfile = Object.assign({}, vm.userProfile, {<br/>
+                    age: 27,<br/>
+                    favoriteColor: 'Vue Green'<br/>
+                  })</p>
+        </div>
+        
+        <h3>2019-05-31</h3>
+        <h4>修饰符</h4>
+        <div class="item-container">
+            <p>在默认情况下，v-model 在每次 input 事件触发后将输入框的值与数据进行同步 (除了上述输入法组合文字时)。你可以添加 lazy 修饰符，从而转变为使用 change 事件进行同步</p>
+
+        </div>
         
     </article> 
