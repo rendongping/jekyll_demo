@@ -1,0 +1,108 @@
+<!--
+ * @Author: cc cc@gitlab.com
+ * @Date: 2023-09-11 16:29:48
+ * @LastEditors: cc cc@gitlab.com
+ * @LastEditTime: 2023-09-11 16:32:42
+ * @FilePath: /blog/_posts/2023-03-10-nodejs.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" >
+    <button onclick="submit()">ok</button>
+    <img src="" alt="">
+    <script>
+        let btnDom = document.getElementsByTagName('button')[0];
+        let inputDom = document.getElementsByTagName('input')[0];
+        function submit() {
+            document.getElementsByTagName('img')[0].setAttribute('src', 'data:image/png;base64,'+inputDom.value)
+        }
+
+        // 防抖处理
+        const debouncedHandle = debounce(updateValue, 1000, false); 
+        inputDom.addEventListener("input", debouncedHandle);
+
+        function updateValue() {
+            console.log(inputDom.value)
+        }
+
+
+window.addEventListener('resize', updateValue);
+
+        /**
+         * 防抖函数
+         * @param {Function} func 需要防抖的函数 
+         * @param {number} wait 延迟执行毫秒数
+         * @param {boolean} immediate 是否立即执行 
+         * @return {Function} 防抖函数
+         */
+        // function debounce(func, wait = 50, immediate = false) {
+
+        //     let timeout;
+
+        //     return function executedFunction() {
+            
+        //     const context = this;
+        //     const args = arguments;
+
+        //     const later = () => {
+        //         timeout = null;
+        //         if(!immediate) {
+        //         func.apply(context, args);
+        //         }
+        //     };
+
+        //     const callNow = immediate && !timeout;
+
+        //     clearTimeout(timeout);
+
+        //     timeout = setTimeout(later, wait);
+
+        //     if (callNow) {
+        //         func.apply(context, args);
+        //     }
+
+        //     };
+
+        // }
+        function debounce(func,wait,immediate) {
+            let timer;
+
+            return function () {
+                let context = this;
+                let args = arguments;
+
+                if (timer) clearTimeout(timer);
+                if (!immediate) {
+                    var callNow = !timer;
+                    timer = setTimeout(() => {
+                        timer = null;
+                    }, wait)
+                    if (callNow) func.apply(context, args)
+                } else {
+                    timer = setTimeout(function(){
+                        func.apply(context, args)
+                    }, wait);
+                }
+            }
+        }
+
+
+        navigator.mediaDevices.getUserMedia({
+            video: {
+                width: 400,
+                height: 400,
+                facingMode: 'user',
+            }
+        }).then((suc)=>{console.log(suc)}).catch(error=>{console.log(error)})
+    </script>
+</body>
+</html>
+<img src="" alt="">

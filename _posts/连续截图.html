@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  <!-- 隐藏的canvas画布,用于生成截图 -->
+  <canvas id="canvas" width="400" height="400"></canvas>
+  
+  <!-- 显示视频流的video元素 -->
+  <video id="video" muted></video>
+  
+  <!-- 点击按钮截图 -->
+  <button id="capture">拍摄</button> 
+  
+  <!-- 显示截图预览 -->
+  <img id="preview" src="" alt="预览截图" />
+
+  <script>
+  // 保存媒体流引用
+  let mediaStreamTrack = null; 
+
+  // 获取页面元素
+  const video = document.getElementById('video');
+  const canvas = document.getElementById('canvas');
+  const captureBtn = document.getElementById('capture');
+  const previewImg = document.getElementById('preview');
+
+  // 封装兼容不同浏览器的获取媒体流方法
+  async function getMediaStream() {
+    // 新API,如果不支持则回退到旧API
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          width: 400,
+          height: 400,
+          facingMode: 'user' // 使用前置摄像头
+        }
+      });
+
+      mediaStreamTrack = stream.getTracks()[0];
+      video.srcObject = stream;
+      video.play();
+    } catch (error) {
+      // 回退到旧的navigator.getUserMedia
+      navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+
+      const constraints = {
+        video: {
+          width: 400,
+          height: 400,
+          facingMode: 'user'
+        }
+      };
+
+      navigator.getUserMedia(constraints, handleSuccess, handleError);
+
+      function handleSuccess(stream) {
+        mediaStreamTrack = stream.getTracks()[0];
+        video.srcObject = stream;
+        video.play();
+      }
+
+      function handleError(error) {
+        console.error('Failed to get user media', error);
+      }
+    }
+  }
+
+  // 点击按钮进行截图
+  captureBtn.addEventListener('click', function() {
+    // 在隐藏的canvas上绘制视频画面
+    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    // 生成截图并显示预览
+    previewImg.src = canvas.toDataURL('image/jpeg');
+  });
+
+  // 获取媒体流
+  getMediaStream();
+  </script>
+
+</body>
+
+</html>
